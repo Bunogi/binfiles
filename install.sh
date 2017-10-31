@@ -10,7 +10,8 @@ ln -s $PWD/bin $targetdir/bin
 
 for i in $FILES
 do
-	rm $targetdir/$i && ln -s $PWD/$i $targetdir/$i
+	rm $targetdir/$i
+       	ln -s $PWD/$i $targetdir/$i
 	if [ $? != 0 ]
 	then
 		exit
