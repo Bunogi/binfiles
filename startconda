@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+zsh -c "source /opt/anaconda/bin/activate root; export PS1=\"(anaconda) :$PS1\""
