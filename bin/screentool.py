@@ -11,7 +11,7 @@ taken_file = "/tmp/screentool-taken"
 upload_file = "/tmp/screentool-uploaded"
 link_file = "/tmp/screentool-link"
 api_url = "http://status.novaember.com/image"
-secret_file = os.path.expanduser("~") + "/.nvsecret"
+secret_file = os.environ["HOME"] + "/.nvsecret"
 
 use_shorturl = True
 
