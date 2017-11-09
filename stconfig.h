@@ -1,4 +1,4 @@
-/* See LICENSE file for copyright and license details. */
+/* See LICENSE_ST file for copyright and license details. */
 
 /*
  * appearance

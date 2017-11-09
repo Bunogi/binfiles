@@ -1,0 +1,14 @@
+#!/usr/bin/env python
+
+import sys, os
+sys.path.append(os.path.expanduser("~") + "/dotfiles/bin")
+
+import screentool
+
+from gi.repository import Notify
+
+Notify.init("test.py")
+
+to_upload = os.environ["NAUTILUS_SCRIPT_SELECTED_FILE_PATHS"]
+url = screentool.upload_image(to_upload)
+os.system("echo " + url + " | xclip -sel clipboard")

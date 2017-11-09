@@ -23,6 +23,9 @@ cp stconfig.h ~/pkgs/st/config.h &&
 cd ~/pkgs/st &&
 make && sudo make install
 
-
-
-
+rm ~/.config/share/nautilus/scripts/*
+for f in $PWD/nautilus/*
+do
+    b=$(basename "$f")
+    ln -s "$f" "$HOME/.local/share/nautilus/scripts/$b"
+done
