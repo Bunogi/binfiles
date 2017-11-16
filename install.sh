@@ -2,7 +2,7 @@
 
 set -o xtrace
 
-FILES=".spacemacs .zprofile .zshrc .profile"
+FILES=".spacemacs .zprofile .zshrc .profile .latexmk"
 targetdir=~
 
 rm -rf $targetdir/bin
