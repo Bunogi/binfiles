@@ -37,7 +37,11 @@ SAVEHIST=10000000
 bindkey "${terminfo[khome]}" beginning-of-line
 bindkey "${terminfo[kend]}" end-of-line
 bindkey  "${terminfo[kdch1]}"  delete-char
-function zle-line-init () { echoti smkx }
-		function zle-line-finish () { echoti rmkx }
-		zle -N zle-line-init
-		zle -N zle-line-finish
+
+if [[ -n ${terminfo[smkx]} ]] && [[ -n ${terminfo[rmkx]} ]]; then
+    function zle-line-init () { echoti smkx }
+    function zle-line-finish () { echoti rmkx }
+
+    zle -N zle-line-init
+    zle -N zle-line-finish
+fi
