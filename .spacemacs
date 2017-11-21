@@ -53,12 +53,13 @@ values."
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
-     ;; spell-checking
+     spell-checking
      syntax-checking
      version-control
      themes-megapack
      extra-langs
      shell
+     pdf-tools
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -324,7 +325,8 @@ you should place your code here."
   (setq rust-format-on-save t)
   (setq neo-theme 'nerd)
   (setq magit-repository-directories '("~/projects/"))
-  )
+  (add-hook 'doc-view-mode-hook 'auto-revert-mode)
+)
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
