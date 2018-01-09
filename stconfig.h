@@ -5,7 +5,7 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char font[] = "Terminus:pixelsize=16:antialias=false";
+static char font[] = "Fantasque sans mono:pixelsize=18";
 static int borderpx = 10;
 #define histsize 5000
 
