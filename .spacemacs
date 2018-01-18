@@ -31,7 +31,8 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
-     c-c++
+     (c-c++ :variables
+            c-c++-enable-clang-support t)
      rust
      python
      latex
