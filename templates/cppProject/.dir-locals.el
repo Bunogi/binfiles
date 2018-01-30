@@ -3,5 +3,6 @@
 
 ((c++-mode
   (flycheck-clang-include-path . ("../include"))
-  (flycheck-clang-language-standard . "c++17")))
+  (flycheck-clang-language-standard . "c++17"))
+  (helm-make-build-dir . "build/"))
 
