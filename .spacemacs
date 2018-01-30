@@ -53,6 +53,7 @@ values."
      shell
      pdf-tools
      shaders
+     lua
      ;Potentially reenable in the future
      ;asm
      ;themes-megapack
