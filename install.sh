@@ -19,7 +19,7 @@ do
 done
 
 rm ~/pkgs/st/config.h &&
-cp stconfig.h ~/pkgs/st/config.h &&
+ln -s ~/pkgs/st/config.h stconfig.h &&
 cd ~/pkgs/st &&
 make && sudo make install
 
