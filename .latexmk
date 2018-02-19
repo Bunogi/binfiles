@@ -1,1 +1,0 @@
-$pdflatex=q/xelatex -syntex=1 %0 %S/

@@ -1,0 +1,1 @@
+$pdflatex=q/xelatex -shell-escape %S/
