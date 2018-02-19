@@ -5,7 +5,7 @@ PROMPT='$(zsh_prompt)'
 function zsh_prompt() {
     echo '%F{red}%T%f | %F{yellow}%m%f | %F{green}%B%~%f%b'
     echo -n '%(?.%K{green}.%K{red}) '
-    echo '%k %B%(!.%F{red}#%f.$)%b: '
+    echo '%k %B%(!.%F{red}root #%f.$)%b: '
 }
 
 
