@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ "$HOSTNAME" == "lilly" ]; then
+    polybar lilly
+else
+    polybar left &
+    polybar right
+fi
+

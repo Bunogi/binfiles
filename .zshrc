@@ -8,7 +8,6 @@ function zsh_prompt() {
     echo '%k %B%(!.%F{red}root #%f.$)%b: '
 }
 
-
 setopt promptsubst
 
 alias ls="ls --color=auto -F --si"
