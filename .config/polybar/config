@@ -74,6 +74,11 @@ inherit = bar/left
 tray-position = 
 monitor = HDMI-A-0
 
+[bar/lilly]
+inherit = bar/left
+monitor = eDP-1
+modules-right = filesystem-l volume
+
 [module/loadavg]
 type = custom/script
 interval = 5
@@ -95,6 +100,16 @@ label-layout = %name%
 label-indicator-padding = 2
 label-indicator-margin = 1
 label-indicator-background = ${colors.secondary}
+
+[module/filesystem-l]
+type=internal/fs
+interval = 25
+
+mount-0 = /
+
+label-mounted = %mountpoint%: %used%/%total%
+label-unmounted = %mountpoint% not mounted
+label-unmounted-foreground = ${colors.foreground-alt}
 
 [module/filesystem]
 type = internal/fs
