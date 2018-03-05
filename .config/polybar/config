@@ -17,12 +17,14 @@ foreground-alt = #ccc
 primary = #ffcc66
 secondary = #6699cc
 alert = #f2777a
+aqua = #6cc
 
 [bar/left]
 font-0 = Fantasque Sans Mono:size=12
 font-1 = Font Awesome 5 Free:style=Regular:size=12
 font-2 = Font Awesome 5 Free:style=Solid:size=12
 font-3 = Font Awesome 5 Brands:style=Regular:size=12
+font-4 = material\-wifi:size=12
 
 locale = "nb_NO.UTF-8"
 monitor = DisplayPort-1
@@ -77,7 +79,7 @@ monitor = HDMI-A-0
 [bar/lilly]
 inherit = bar/left
 monitor = eDP-1
-modules-right = filesystem-l volume
+modules-right = filesystem-l battery backlight wlan volume 
 
 [module/loadavg]
 type = custom/script
@@ -189,11 +191,12 @@ icon-next = 
 label-song-maxlen = 70
 label-song-ellipsis = true
 
-[module/xbacklight]
-type = internal/xbacklight
+[module/backlight]
+type = internal/backlight
+card = intel_backlight
 
-format = <label> <bar>
-label = BL
+format = <label>
+label =  %percentage%%
 
 bar-width = 10
 bar-indicator = |
@@ -206,10 +209,10 @@ bar-empty = ─
 bar-empty-font = 2
 bar-empty-foreground = ${colors.foreground-alt}
 
-[module/backlight-acpi]
-inherit = module/xbacklight
-type = internal/backlight
-card = intel_backlight
+; [module/backlight-acpi]
+; inherit = module/xbacklight
+; type = internal/backlight
+; card = intel_backlight
 
 [module/cpu]
 type = internal/cpu
@@ -229,11 +232,10 @@ label = %percentage_used%%
 
 [module/wlan]
 type = internal/network
-interface = net1
+interface = wlo1
 interval = 3.0
 
 format-connected = <ramp-signal> <label-connected>
-format-connected-underline = #9f78e1
 label-connected = %essid%
 
 format-disconnected =
@@ -242,11 +244,10 @@ format-disconnected =
 ;label-disconnected = %ifname% disconnected
 ;label-disconnected-foreground = ${colors.foreground-alt}
 
-ramp-signal-0 = 
-ramp-signal-1 = 
-ramp-signal-2 = 
-ramp-signal-3 = 
-ramp-signal-4 = 
+ramp-signal-0 = 
+ramp-signal-1 = 
+ramp-signal-2 = 
+ramp-signal-3 = 
 ramp-signal-foreground = ${colors.foreground-alt}
 
 [module/eth]
@@ -293,24 +294,28 @@ battery = BAT0
 adapter = ADP1
 full-at = 98
 
-format-charging = <animation-charging> <label-charging>
-format-charging-underline = #ffb52a
+format-charging =  <animation-charging> <label-charging>
+format-charging-underline = ${colors.secondary}
 
 format-discharging = <ramp-capacity> <label-discharging>
-format-discharging-underline = ${self.format-charging-underline}
+format-discharging-underline = ${colors.alert}
 
-format-full-prefix = " "
+format-full-prefix = " "
 format-full-prefix-foreground = ${colors.foreground-alt}
 format-full-underline = ${self.format-charging-underline}
 
-ramp-capacity-0 = 
-ramp-capacity-1 = 
-ramp-capacity-2 = 
+ramp-capacity-4 = 
+ramp-capacity-3 = 
+ramp-capacity-2 = 
+ramp-capacity-1 = 
+ramp-capacity-0 = 
 ramp-capacity-foreground = ${colors.foreground-alt}
 
-animation-charging-0 = 
-animation-charging-1 = 
-animation-charging-2 = 
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-4 = 
+animation-charging-5 = 
 animation-charging-foreground = ${colors.foreground-alt}
 animation-charging-framerate = 750
 
