@@ -49,7 +49,7 @@ bindsym $mod+Control+k resize grow height 5 px or 5 ppt
 bindsym $mod+Control+j resize shrink height 5 px or 5 ppt
 bindsym $mod+Control+l resize grow width 5 px or 5 ppt
 
-bindsym $mod+Control+s move workspace to output left
+bindsym $mod+Shift+s move workspace to output left
 
 
 #BEGIN I3-GAPS SPECIFIC CONF
