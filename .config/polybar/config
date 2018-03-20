@@ -49,7 +49,7 @@ padding = 0
 module-margin-left = 1
 module-margin-right = 2
 
-modules-left = i3 xwindow
+modules-left = i3 xwindow player-mpris
 modules-center = date
 modules-right = filesystem volume
 
@@ -336,6 +336,11 @@ ramp-0 = 
 ramp-1 = 
 ramp-2 = 
 ramp-foreground = ${colors.foreground-alt}
+
+[module/player-mpris]
+type = custom/script
+exec = ~/.config/polybar/player-mpris-tail.py
+tail = true
 
 [module/powermenu]
 type = custom/menu
