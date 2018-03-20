@@ -1,0 +1,64 @@
+#!/bin/bash
+
+dzen_command="dzen2 -p 2 -xs 1 -geometry 250x50-265+35 -fn 'Fantasque Sans Mono-12' -fg '#ccc' -bg '#2d2d2d'"
+volume_notches=20
+volume_step="5%"
+
+function get_volume {
+    amixer -D pulse get Master | grep -o -E "[[:digit:]]+%" -m1
+}
+
+function raise_volume {
+    amixer -D pulse sset Master "$volume_step+" unmute
+}
+
+function lower_volume {
+    amixer -D pulse sset Master "$volume_step-" unmute
+}
+
+function toggle_mute {
+    amixer -D pulse sset Master toggle
+}
+
+function is_muted {
+    [ "$(amixer -D pulse get Master | grep "off" -m1)" ]
+}
+
+# $1: percentage
+function make_volume_string {
+    local percentage=$(echo "$1" | sed 's/%//')
+    local filled_bars=$(($percentage * $volume_notches / 100))
+    local str="["
+
+    for ((i=1; i < volume_notches; i++)); do
+        if [ "$i" -gt "$filled_bars" ]; then
+            str="$str "
+        else
+            str="$str="
+        fi
+    done
+    str="$str]"
+
+    local number=""
+    if is_muted; then
+        number="--%"
+    else
+        number="$percentage%"
+    fi
+
+    printf '%-4s %s\n' "$number" "$str"
+}
+
+case $1 in
+    "raise")
+        raise_volume
+        ;;
+    "lower")
+        lower_volume
+        ;;
+    "mute")
+        toggle_mute
+        ;;
+esac
+
+make_volume_string $(get_volume) | eval $dzen_command

@@ -30,11 +30,11 @@ exec setxkbmap us -option caps:escape
 #Custom keybinds:
 bindsym XF86AudioPlay exec playerctl play-pause
 bindsym XF86AudioStop exec playerctl stop
-bindsym XF86AudioRaiseVolume exec amixer -D pulse sset Master 5%+ unmute
-bindsym XF86AudioLowerVolume exec amixer -D pulse sset Master 5%- unmute
+bindsym XF86AudioRaiseVolume exec volume raise
+bindsym XF86AudioLowerVolume exec volume lower
 bindsym XF86AudioPrev exec playerctl previous
 bindsym XF86AudioNext exec playerctl next
-bindsym XF86AudioMute exec amixer sset Master toggle
+bindsym XF86AudioMute exec volume mute
 bindsym Print exec screentool.py
 bindsym Control+Print exec screentool.py upload
 bindsym $mod+n exec setxkbmap no -option caps:escape
