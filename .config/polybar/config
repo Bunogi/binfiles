@@ -44,12 +44,12 @@ line-color = #f00
 border-size = 0
 border-color = #00000000
 
-padding = 0 
+padding = 0
 
 module-margin-left = 1
 module-margin-right = 2
 
-modules-left = i3 xwindow player-mpris
+modules-left = i3 xwindow
 modules-center = date
 modules-right = filesystem volume
 
@@ -72,13 +72,13 @@ tray-background = ${colors.background-alt}
 
 [bar/right]
 inherit = bar/left
-tray-position = 
+tray-position =
 monitor = HDMI-A-0
 
 [bar/lilly]
 inherit = bar/left
 monitor = eDP-1
-modules-right = filesystem-l battery backlight wlan volume 
+modules-right = filesystem-l battery backlight wlan volume
 
 [module/loadavg]
 type = custom/script
@@ -281,16 +281,16 @@ type = internal/volume
 format-volume = <ramp-volume> <label-volume>
 label-volume-foreground = ${root.foreground}
 
-ramp-volume-0 =  
-ramp-volume-1 =  
-ramp-volume-2 =  
+ramp-volume-0 = 
+ramp-volume-1 = 
+ramp-volume-2 = 
 
 label-muted   =  0%
 
 [module/battery]
 type = internal/battery
 battery = BAT0
-adapter = ADP1
+adapter = AC
 full-at = 98
 
 format-charging =  <animation-charging> <label-charging>
