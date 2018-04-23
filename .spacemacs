@@ -329,6 +329,21 @@ you should place your code here."
   (setq neo-theme 'nerd)
   (setq magit-repository-directories '("~/projects/"))
   (add-hook 'doc-view-mode-hook 'auto-revert-mode)
+
+  ;; Prevent the modeline from being too tall
+  (spacemacs/toggle-mode-line-minor-modes-off)
+
+  ;; Battery for laptop
+  (when (string= (system-name) "lilly")
+    (spacemacs/toggle-mode-line-battery-on))
+
+  ;; Org-mode configuration
+  (with-eval-after-load 'org
+    (setq org-hide-block-overlays t)
+    (setq org-hide-emphasis-markers t)
+    ;; Bigger latex fragments in org
+    (setq org-format-latex-options
+          (plist-put org-format-latex-options :scale 1.5)))
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
