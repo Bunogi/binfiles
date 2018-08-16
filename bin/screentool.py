@@ -4,21 +4,21 @@ import sys
 import os
 import time
 import subprocess
-import json
+import gi
+import base64
+import hashlib
 
 ss_file = "/tmp/screenshot.png"
 taken_file = "/tmp/screentool-taken"
 upload_file = "/tmp/screentool-uploaded"
 link_file = "/tmp/screentool-link"
-api_url = "http://status.novaember.com/image"
-secret_file = os.environ["HOME"] + "/.nvsecret"
+upload_target = "bunogi@bunogi.xyz:~/shots/"
+base_url = "https://shots.bunogi.xyz/"
 
-use_shorturl = True
-
+gi.require_version('Notify', '0.7')
 from gi.repository import Notify
 
 def should_upload():
-
     if not os.path.isfile(upload_file):
         return True
 
@@ -33,29 +33,23 @@ def should_upload():
     return upload_time < taken_time
 
 def upload_image(file_path):
-        secret = open(secret_file, "r")
-        secret_data = secret.read()
-        secret.close()
-
         Notify.Notification.new("Uploading image...").show()
-        process = subprocess.Popen(["curl", "-s", api_url,
-                                    "-F", "file=@" + file_path,
-                                    "-F", "secret=" + secret_data],
-                                   stdout=subprocess.PIPE)
 
-        out, err = process.communicate()
-        output = json.loads(out)
-        if output["status"] == "fail":
-            Notify.Notification.new("Failed to upload image: ", out).show()
+        f = open(ss_file, "rb")
+        buf = f.read()
+        hasher = hashlib.sha3_224()
+        hasher.update(buf)
+
+        target_name = str(base64.urlsafe_b64encode(hasher.digest()).hex()[0:4]) + ".png"
+        p = subprocess.run(["scp", ss_file, upload_target + target_name])
+        print(p.args)
+        if p.returncode != 0:
+            Notify.Notification.new("Failed to upload image", "got " + str(status)).show()
             sys.exit(1)
         else:
-            if use_shorturl:
-                url = output["shorturl"]
-            else:
-                url = output["url"]
-            Notify.Notification.new("Image Uploaded!", url).show()
-            return url
-
+            full_url = base_url + target_name
+            Notify.Notification.new("Image uploaded!", full_url).show()
+            return full_url
 
 if __name__ == "__main__":
     Notify.init("screentool.py")
@@ -88,4 +82,4 @@ if __name__ == "__main__":
             f.close()
             Notify.Notification.new("Image already uploaded!", url).show()
 
-        os.system("echo " + url + " | xclip -sel clipboard")
+        os.system("echo -n " + url + " | xclip -sel clipboard")
