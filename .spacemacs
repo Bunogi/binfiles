@@ -42,7 +42,7 @@ values."
      emacs-lisp
      git
      colors
-     (markdown :variables markdown-live-preview-engine 'vmd)
+     ;; (markdown :variables markdown-live-preview-engine 'vmd)
      org
      (spell-checking :variables
                      enable-flyspell-auto-completion t
@@ -51,19 +51,19 @@ values."
      version-control
      shell
      pdf-tools
+     html
      ;; shaders
      ;; lua
      ;; Potentially reenable in the future
      ;; asm
      ;; themes-megapack
      ;; extra-langs
-     ;; better-defaults
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '()
+   dotspacemacs-additional-packages '(base16-theme)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -126,7 +126,7 @@ values."
    ;; `recents' `bookmarks' `projects' `agenda' `todos'."
    ;; List sizes may be nil, in which case
    ;; `spacemacs-buffer-startup-lists-length' takes effect.
-   dotspacemacs-startup-lists '((recents . 5)
+   dotspacemacs-startup-lists '((recents . 7)
                                 (projects . 7))
    ;; True if the home buffer should respond to resize events.
    dotspacemacs-startup-buffer-responsive t
@@ -135,15 +135,15 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(sanityinc-tomorrow-eighties
+   dotspacemacs-themes '(base16-gruvbox-dark-hard
                          spacemacs-dark
                          spacemacs-light)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Fantasque Sans Mono"
-                               :size 16
+   dotspacemacs-default-font '("Hack"
+                               :size 15
                                :weight normal
                                :width normal
                                :powerline-scale 1.0)
@@ -269,7 +269,7 @@ values."
    ;;                       text-mode
    ;;   :size-limit-kb 1000)
    ;; (default nil)
-   dotspacemacs-line-numbers '(:relative t
+   dotspacemacs-line-numbers '(:relative nil
                                :disabled-for-modes dired-mode
                                                    org-mode
                                                    pdf-view-mode
@@ -328,7 +328,14 @@ you should place your code here."
   (setq rust-format-on-save t)
   (setq neo-theme 'nerd)
   (setq magit-repository-directories '("~/projects/"))
+
+  ;; Automatically reload latex documents and things
   (add-hook 'doc-view-mode-hook 'auto-revert-mode)
+
+  ;; Emacs discord integration
+  (load-file "~/pkgs/discord-emacs.el/discord-emacs.el")
+  (discord-emacs-run "384815451978334208")
+  (setq confirm-kill-processes nil) ;; Prevent discord integration from being in the way
 
   ;; Prevent the modeline from being too tall
   (spacemacs/toggle-mode-line-minor-modes-off)
@@ -344,6 +351,15 @@ you should place your code here."
     ;; Bigger latex fragments in org
     (setq org-format-latex-options
           (plist-put org-format-latex-options :scale 1.5)))
+
+  ;; Clippy binding
+  (add-hook 'rust-mode-hook
+    (lambda()
+      (spacemacs/set-leader-keys-for-major-mode 'rust-mode
+        "C" 'rust-run-clippy)))
+
+  ;; Colors for midnight-view
+  (setq pdf-view-midnight-colors (quote ("#d5c4a1" . "#1d2021")))
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -353,20 +369,52 @@ you should place your code here."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-faces-vector
+   [default bold shadow italic underline bold bold-italic bold])
+ '(ansi-color-names-vector
+   (vector "#373b41" "#cc6666" "#b5bd68" "#f0c674" "#81a2be" "#b294bb" "#8abeb7" "#c5c8c6"))
+ '(beacon-color "#cc6666")
  '(custom-enabled-themes (quote (sanityinc-tomorrow-eighties)))
+ '(custom-safe-themes
+   (quote
+    ("628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" default)))
  '(evil-want-Y-yank-to-eol nil)
+ '(fci-rule-color "#373b41" t)
+ '(flycheck-color-mode-line-face-to-color (quote mode-line-buffer-id))
+ '(frame-background-mode (quote dark))
  '(magit-log-section-arguments
    (quote
     ("--graph" "--color" "--decorate" "-n256" "++order=date")))
  '(package-selected-packages
    (quote
-    (tracking lua-mode org-mime glsl-mode company-glsl ghub let-alist flyspell-popup xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help org-ref pdf-tools key-chord ivy tablist helm-bibtex parsebib biblio biblio-core thrift stan-mode scad-mode qml-mode matlab-mode julia-mode arduino-mode rainbow-mode rainbow-identifiers color-identifiers-mode dash-functional x86-lookup nasm-mode vmd-mode disaster company-c-headers cmake-mode clang-format company-auctex auctex-latexmk auctex yapfify pyvenv pytest pyenv-mode py-isort pip-requirements spinner live-py-mode hy-mode helm-pydoc cython-mode company-anaconda anaconda-mode pythonic powerline org-category-capture hydra parent-mode projectile pkg-info epl flx iedit anzu goto-chg undo-tree highlight f s diminish bind-map bind-key packed dash avy async popup smartparens helm zonokai-theme zenburn-theme zen-and-art-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme tronesque-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme pastels-on-dark-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme niflheim-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme firebelly-theme farmhouse-theme espresso-theme dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme evil helm-core helm-company helm-c-yasnippet fuzzy company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete smeargle orgit org-projectile org-present org-pomodoro alert log4e gntp org-download mmm-mode markdown-toc markdown-mode magit-gitflow htmlize helm-gitignore gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md flyspell-correct-helm flyspell-correct flycheck-rust seq flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit with-editor diff-hl auto-dictionary toml-mode racer cargo rust-mode ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line)))
- '(pdf-view-midnight-colors (quote ("#ccc" . "#2d2d2d")))
+    (base16-theme web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data tracking lua-mode org-mime glsl-mode company-glsl ghub let-alist flyspell-popup xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help org-ref pdf-tools key-chord ivy tablist helm-bibtex parsebib biblio biblio-core thrift stan-mode scad-mode qml-mode matlab-mode julia-mode arduino-mode rainbow-mode rainbow-identifiers color-identifiers-mode dash-functional x86-lookup nasm-mode vmd-mode disaster company-c-headers cmake-mode clang-format company-auctex auctex-latexmk auctex yapfify pyvenv pytest pyenv-mode py-isort pip-requirements spinner live-py-mode hy-mode helm-pydoc cython-mode company-anaconda anaconda-mode pythonic powerline org-category-capture hydra parent-mode projectile pkg-info epl flx iedit anzu goto-chg undo-tree highlight f s diminish bind-map bind-key packed dash avy async popup smartparens helm zonokai-theme zenburn-theme zen-and-art-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme tronesque-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme pastels-on-dark-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme niflheim-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme firebelly-theme farmhouse-theme espresso-theme dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme evil helm-core helm-company helm-c-yasnippet fuzzy company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete smeargle orgit org-projectile org-present org-pomodoro alert log4e gntp org-download mmm-mode markdown-toc markdown-mode magit-gitflow htmlize helm-gitignore gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md flyspell-correct-helm flyspell-correct flycheck-rust seq flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit with-editor diff-hl auto-dictionary toml-mode racer cargo rust-mode ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line)))
  '(safe-local-variable-values
    (quote
     ((flycheck-clang-include-path . "include")
      (flycheck-clang-language-standard . c++17)
-     (flycheck-clang-include-path . include)))))
+     (flycheck-clang-include-path . include))))
+ '(vc-annotate-background nil)
+ '(vc-annotate-color-map
+   (quote
+    ((20 . "#cc6666")
+     (40 . "#de935f")
+     (60 . "#f0c674")
+     (80 . "#b5bd68")
+     (100 . "#8abeb7")
+     (120 . "#81a2be")
+     (140 . "#b294bb")
+     (160 . "#cc6666")
+     (180 . "#de935f")
+     (200 . "#f0c674")
+     (220 . "#b5bd68")
+     (240 . "#8abeb7")
+     (260 . "#81a2be")
+     (280 . "#b294bb")
+     (300 . "#cc6666")
+     (320 . "#de935f")
+     (340 . "#f0c674")
+     (360 . "#b5bd68"))))
+ '(vc-annotate-very-old-color nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
