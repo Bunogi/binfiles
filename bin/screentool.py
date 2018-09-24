@@ -55,7 +55,10 @@ if __name__ == "__main__":
     Notify.init("screentool.py")
 
     if len(sys.argv) == 1:  # Capture
-        os.system("maim -s -k -c 1,0.68,0 -b 1 " + ss_file)
+        p = subprocess.run(["maim", "-s", "-k", "-c", "1,0.68,0", "-b", "1", ss_file])
+        if p.returncode != 0:
+            exit()
+
         os.system("xclip -sel clipboard -t image/png < " + ss_file)
         f = open(taken_file, "w")  # fuck error handling
         f.write(str(time.time()))
@@ -83,3 +86,4 @@ if __name__ == "__main__":
             Notify.Notification.new("Image already uploaded!", url).show()
 
         os.system("echo -n " + url + " | xclip -sel clipboard")
+        os.system("echo -n " + url + " | xclip")
