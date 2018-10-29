@@ -7,12 +7,13 @@ import subprocess
 import gi
 import base64
 import hashlib
+import json
 
 ss_file = "/tmp/screenshot.png"
 taken_file = "/tmp/screentool-taken"
 upload_file = "/tmp/screentool-uploaded"
 link_file = "/tmp/screentool-link"
-upload_target = "bunogi@bunogi.xyz:~/shots/"
+upload_target = "https://shots.bunogi.xyz/upload"
 base_url = "https://shots.bunogi.xyz/"
 
 gi.require_version('Notify', '0.7')
@@ -35,19 +36,14 @@ def should_upload():
 def upload_image(file_path):
         Notify.Notification.new("Uploading image...").show()
 
-        f = open(ss_file, "rb")
-        buf = f.read()
-        hasher = hashlib.sha3_224()
-        hasher.update(buf)
-
-        target_name = str(base64.urlsafe_b64encode(hasher.digest()).hex()[0:4]) + ".png"
-        p = subprocess.run(["scp", ss_file, upload_target + target_name])
+        p = subprocess.Popen(["curl", "-F", "token=@/home/bunogi/.monshot_token", "-F", "image=@{}".format(file_path), upload_target], stdout=subprocess.PIPE)
+        out, err = p.communicate()
         print(p.args)
         if p.returncode != 0:
             Notify.Notification.new("Failed to upload image", "got " + str(status)).show()
             sys.exit(1)
         else:
-            full_url = base_url + target_name
+            full_url = json.loads(out.decode("utf-8").strip())["path"]
             Notify.Notification.new("Image uploaded!", full_url).show()
             return full_url
 
